@@ -7,4 +7,5 @@ export interface UserProfile {
     role: string 
     created: string
     updated: string
+    user_id: string
 }

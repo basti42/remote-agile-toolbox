@@ -16,6 +16,15 @@ export interface Story {
     acceptance_criteria: AcceptanceCriterium[] | undefined
 }
 
+export interface NewStory {
+    creator: string
+    team: string | undefined
+    project: string | undefined
+    status: "icebox"
+    title: string
+    description: string
+}
+
 export interface StorypointEstimation {
     complexity: number
     risk: number

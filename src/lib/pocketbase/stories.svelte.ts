@@ -1,4 +1,4 @@
-import type { Story } from "$lib/models/story";
+import type { NewStory, Story } from "$lib/models/story";
 import { getContext, setContext } from "svelte";
 import { pb } from "$lib/pocketbase";
 
@@ -22,9 +22,33 @@ class StoriesStore {
         this.stories = stories;
     }
 
-    addStory(story: Story) {
-        // TODO persist story in DB
-        this.stories.unshift(story);
+    addStory(newStory: NewStory) {
+        pb.collection("stories").create<Story>({
+            count: this.stories.length + 1,
+            title: newStory.title,
+            description: newStory.description,
+            status: newStory.status,
+            team: newStory.team,
+            project: newStory.project,
+            creator: newStory.creator
+        })
+            .then(story => {
+                this.stories.unshift(story);
+            })
+            .catch(err => {
+                console.error("error creating story in db: ", err);
+            });
+    }
+
+    updateStoryStatus(story_id: string, newStatus:string) {
+        pb.collection("stories").update<Story>(story_id, {"status": newStatus})
+            .then(updatedStory => {
+                const idx = this.stories.findIndex(s => s.id === story_id);
+                this.stories[idx] = updatedStory;
+            })
+            .catch(err => {
+                console.error(`error updating story=${story_id}: ${err}`);
+            })
     }
 }
 

@@ -1,7 +1,8 @@
 <script lang="ts">
     import { BrainCircuit, Dumbbell, TriangleAlert } from 'lucide-svelte';
     import * as Table from '$lib/components/ui/table';
-	import { getStoriesStore } from '$lib/pocketbase/stories.svelte';
+    import * as Select from '$lib/components/ui/select';
+    import { getStoriesStore } from '$lib/pocketbase/stories.svelte';
 
     const storiesStore = getStoriesStore();
 
@@ -22,7 +23,11 @@
         {#each storiesStore.stories as story}
             <Table.Row>
                 <Table.Cell>{story.count}</Table.Cell>
-                <Table.Cell class="truncate">{story.title}</Table.Cell>
+                <Table.Cell class="truncate">
+                    <a href="/app/stories/{story.count}">
+                        {story.title}
+                    </a>
+                    </Table.Cell>
                 <Table.Cell>{story.status}</Table.Cell>
                 <Table.Cell>{story.assignee || "unassigned"}</Table.Cell>
                 <Table.Cell>

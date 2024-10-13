@@ -3,6 +3,7 @@
     import { page } from "$app/stores";
     import StoryTable from "./story-table.svelte";
 	import { getStoriesStore } from "$lib/pocketbase/stories.svelte";
+	import NewStorySheet from "$lib/components/internal/NewStorySheet.svelte";
 
     let {data} = $props();    
 
@@ -14,6 +15,10 @@
 
 </script>
 
-<h1>Stories and Issues</h1>
+<div class="w-full flex flex-row justify-between my-4">
+    <h1>Stories and Issues</h1>
+    <NewStorySheet />
+</div>
+
 
 <StoryTable />
