@@ -5,6 +5,7 @@
 	import { setUrlPathStore } from "$lib/stores/breadcrumb.svelte.js";
 	import { Input } from "$lib/components/ui/input";
     import AvatarDropDown from "$lib/components/internal/AvatarDropDown.svelte";
+	import { setStoriesStore } from "$lib/pocketbase/stories.svelte.js";
 
 
     // user profile is being loaded in layout for entire /app context
@@ -13,6 +14,7 @@
 
     setProfileStore(userProfile);
     setUrlPathStore();
+    setStoriesStore();
 
 </script>
 
@@ -23,7 +25,7 @@
                 <a href="/app" title="Home">
                     <House />
                 </a>
-                <a href="/app/issues" title="Issues">
+                <a href="/app/stories" title="Stories">
                     <Ticket />
                 </a>
                 <a href="/app/teams" title="Teams">
