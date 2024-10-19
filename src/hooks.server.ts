@@ -1,50 +1,42 @@
+// import type { Auth } from "$lib/models/auth";
+import type { Auth } from "$lib/models/auth";
 import { redirect, type Handle } from "@sveltejs/kit";
-import PocketBase from 'pocketbase';
+import { pb } from "$lib/pocketbase";
 
 
 export const handle: Handle = async ({event, resolve}) => {
-    event.locals.user_id = '';
-    event.locals.pb = new PocketBase("http://localhost:8090");
 
-    const isAuth: boolean = event.url.pathname.startsWith('/auth');
+    event.locals.pb = pb;
 
-    // each route starting with /auth will log the user out
-    // and clears the session cookie
-    if (isAuth) {
-        event.cookies.delete('pb_auth', {
-            path: '/',
-            httpOnly: true,
-            secure: false,
-            sameSite: 'lax'
-        });
-        return await resolve(event);
+    console.debug("hooks: url: ", event.request.url);
+    // console.debug("hooks: event.locals: ", event.locals);
+
+    const isAuthEndpoint = event.url.pathname.startsWith("/auth");
+
+    // load the cookie on every request and set the locals
+    // but skip all auth endpoints as these are setting and removing cookies
+    if (!isAuthEndpoint){
+        try {
+            const auth_cookie_string = event.cookies.get("rat-cookie");
+            // console.debug("auth cookie string: ", auth_cookie_string);
+            const auth: Auth = JSON.parse(auth_cookie_string as string)
+            // console.debug("loaded auth object from cookie: ", auth);
+            event.locals.auth = auth;
+        } catch (err) {
+            // console.error("\terror loading auth from cookie")
+            console.error(err);
+            throw redirect(303, '/auth/login')
+        }
     }
 
-    const pb_auth = event.request.headers.get('cookie') ?? '';
-    event.locals.pb.authStore.loadFromCookie(pb_auth);
 
-    if (!event.locals.pb.authStore.isValid) {
-        console.log('Session expired');
-        throw redirect(303, '/auth/login');
-    }
-
-    try {
-        const auth = await event.locals.pb
-            .collection('users')
-            .authRefresh<{id: string, email: string}>();
-    
-        event.locals.user_id = auth.record.id;
-    } catch (err) {
-        console.error(err);
-        throw redirect(303, '/auth/login')
-    }
-
-    if (!event.locals.user_id) {
-        throw redirect(303, '/auth/login');
+    // final check that everything is in order
+    if (!event.locals.auth) {
+        throw redirect(307, '/auth/login');
     }
 
     const response = await resolve(event);
-    const cookie = event.locals.pb.authStore.exportToCookie({sameSite: 'lax'});
-    response.headers.append('set-cookie', cookie);
+    // const cookie = event.locals.pb.authStore.exportToCookie({sameSite: 'lax'});
+    // response.headers.append('set-cookie', cookie);
     return response;
 }

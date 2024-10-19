@@ -1,3 +1,4 @@
+import type { Auth } from '$lib/models/auth';
 import PocketBase from 'pocketbase';
 
 // See https://kit.svelte.dev/docs/types#app
@@ -6,8 +7,8 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			pb: PocketBase,
-			user_id: string
+			auth: Auth | null,
+			pb: PocketBase
 		}
 		// interface PageData {}
 		// interface PageState {}

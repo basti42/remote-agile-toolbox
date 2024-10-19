@@ -1,20 +1,6 @@
 <script lang="ts">
     import { Github } from "lucide-svelte";
 	import { Button } from "$lib/components/ui/button";
-    import { pb } from "$lib/pocketbase";
-
-    let form: HTMLFormElement;
-
-    const signInWithGithub = async () => {
-        try {
-            await pb.collection("users").authWithOAuth2({provider: "github"});
-            form.token.value = pb.authStore.token;
-            form.submit();
-        } catch (err) {
-            console.error("error trying to log in with GITHUB: ", err);
-        }
-    }
-
 
 </script>
 
@@ -34,9 +20,9 @@
         <div class="w-full max-w-md space-y-4">
             <h2 class="text-2xl font-bold">Login</h2>
             <div class="space-y-4">
-                <form method="POST" bind:this={form}>
+                <form method="POST">
                     <input name="token" type="hidden" />
-                    <Button class="w-full flex flex-row gap-x-4" onclick={signInWithGithub}>
+                    <Button class="w-full flex flex-row gap-x-4" href="http://localhost:8082/oauth/login/github">
                         <Github />
                         <p>Sign in with Github</p>
                     </Button>

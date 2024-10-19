@@ -29,7 +29,7 @@
                 <CircleUser />
                 <span>Profile</span>
             </DropDown.Item>
-            <DropDown.Item href="/auth/login" title="Logout">
+            <DropDown.Item href="/auth/logout" title="Logout" data-sveltekit-preload-data="tap">
                 <LogOut />
                 <span>Logout</span>
             </DropDown.Item>
