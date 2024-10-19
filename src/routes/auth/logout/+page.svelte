@@ -1,5 +1,5 @@
 <div>
-    <span>Successfully logged out</span>
+	<span>Successfully logged out</span>
 
-    <a href="/auth/login">Log in again</a>
+	<a href="/auth/login">Log in again</a>
 </div>

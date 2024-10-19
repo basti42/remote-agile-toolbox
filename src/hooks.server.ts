@@ -1,42 +1,39 @@
 // import type { Auth } from "$lib/models/auth";
-import type { Auth } from "$lib/models/auth";
-import { redirect, type Handle } from "@sveltejs/kit";
-import { pb } from "$lib/pocketbase";
+import type { Auth } from '$lib/models/auth';
+import { redirect, type Handle } from '@sveltejs/kit';
+import { pb } from '$lib/pocketbase';
 
+export const handle: Handle = async ({ event, resolve }) => {
+	event.locals.pb = pb;
 
-export const handle: Handle = async ({event, resolve}) => {
+	console.debug('hooks: url: ', event.request.url);
+	// console.debug("hooks: event.locals: ", event.locals);
 
-    event.locals.pb = pb;
+	const isAuthEndpoint = event.url.pathname.startsWith('/auth');
 
-    console.debug("hooks: url: ", event.request.url);
-    // console.debug("hooks: event.locals: ", event.locals);
+	// load the cookie on every request and set the locals
+	// but skip all auth endpoints as these are setting and removing cookies
+	if (!isAuthEndpoint) {
+		try {
+			const auth_cookie_string = event.cookies.get('rat-cookie');
+			// console.debug("auth cookie string: ", auth_cookie_string);
+			const auth: Auth = JSON.parse(auth_cookie_string as string);
+			// console.debug("loaded auth object from cookie: ", auth);
+			event.locals.auth = auth;
+		} catch (err) {
+			// console.error("\terror loading auth from cookie")
+			console.error(err);
+			throw redirect(303, '/auth/login');
+		}
+	}
 
-    const isAuthEndpoint = event.url.pathname.startsWith("/auth");
+	// final check that everything is in order
+	if (!event.locals.auth) {
+		throw redirect(307, '/auth/login');
+	}
 
-    // load the cookie on every request and set the locals
-    // but skip all auth endpoints as these are setting and removing cookies
-    if (!isAuthEndpoint){
-        try {
-            const auth_cookie_string = event.cookies.get("rat-cookie");
-            // console.debug("auth cookie string: ", auth_cookie_string);
-            const auth: Auth = JSON.parse(auth_cookie_string as string)
-            // console.debug("loaded auth object from cookie: ", auth);
-            event.locals.auth = auth;
-        } catch (err) {
-            // console.error("\terror loading auth from cookie")
-            console.error(err);
-            throw redirect(303, '/auth/login')
-        }
-    }
-
-
-    // final check that everything is in order
-    if (!event.locals.auth) {
-        throw redirect(307, '/auth/login');
-    }
-
-    const response = await resolve(event);
-    // const cookie = event.locals.pb.authStore.exportToCookie({sameSite: 'lax'});
-    // response.headers.append('set-cookie', cookie);
-    return response;
-}
+	const response = await resolve(event);
+	// const cookie = event.locals.pb.authStore.exportToCookie({sameSite: 'lax'});
+	// response.headers.append('set-cookie', cookie);
+	return response;
+};

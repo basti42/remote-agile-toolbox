@@ -7,8 +7,8 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			auth: Auth | null,
-			pb: PocketBase
+			auth: Auth | null;
+			pb: PocketBase;
 		}
 		// interface PageData {}
 		// interface PageState {}
