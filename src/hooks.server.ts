@@ -7,9 +7,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.pb = pb;
 
 	console.debug('hooks: url: ', event.request.url);
-	// console.debug("hooks: event.locals: ", event.locals);
+	// console.debug("hooks: event.locals.auth: ", event.locals.auth);
 
 	const isAuthEndpoint = event.url.pathname.startsWith('/auth');
+	console.debug("hooks.url is auth endpoint: ", isAuthEndpoint);
 
 	// load the cookie on every request and set the locals
 	// but skip all auth endpoints as these are setting and removing cookies
@@ -21,15 +22,17 @@ export const handle: Handle = async ({ event, resolve }) => {
 			// console.debug("loaded auth object from cookie: ", auth);
 			event.locals.auth = auth;
 		} catch (err) {
-			// console.error("\terror loading auth from cookie")
+			console.error("\terror loading auth from cookie")
 			console.error(err);
 			throw redirect(303, '/auth/login');
 		}
 	}
 
 	// final check that everything is in order
-	if (!event.locals.auth) {
-		throw redirect(307, '/auth/login');
+	if (!isAuthEndpoint) {
+		if (!event.locals.auth) {
+			throw redirect(307, '/auth/login');
+		}
 	}
 
 	const response = await resolve(event);

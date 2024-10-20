@@ -22,7 +22,7 @@ export const load = async (event: PageServerLoadEvent) => {
 		console.debug('\t----requesting new access token-----');
 
 		const response = await fetch(
-			`http://localhost:8082/oauth/exchange/${token_id}?exc=${exchange_code}`
+			`http://localhost:8081/oauth/exchange/${token_id}?exc=${exchange_code}`
 		);
 		const data = await response.json();
 		console.debug('token exchange response: ');

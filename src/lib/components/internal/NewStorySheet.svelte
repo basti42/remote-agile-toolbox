@@ -5,20 +5,19 @@
 	import Input from '$lib/components/ui/input/input.svelte';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { getStoriesStore } from '$lib/pocketbase/stories.svelte';
-	import { getProfileStore } from '$lib/pocketbase/profile.svelte';
 	import type { NewStory } from '$lib/models/story';
 
 	const storiesStore = getStoriesStore();
-	const profileStore = getProfileStore();
 
 	let title = $state('');
 	let description = $state('');
 
 	const handleCreateStory = () => {
 		const newStory = {
-			creator: profileStore.profile.user_id,
-			team: 'RAT Dev Team',
-			project: 'RAT',
+			assignee: null,
+			team: null,
+			project: null,
+			feature: null,
 			title,
 			description,
 			status: 'icebox'

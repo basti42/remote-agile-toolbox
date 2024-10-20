@@ -6,6 +6,7 @@
 	import { Input } from '$lib/components/ui/input';
 	import AvatarDropDown from '$lib/components/internal/AvatarDropDown.svelte';
 	import { setStoriesStore } from '$lib/pocketbase/stories.svelte.js';
+	import { setPublicTeamProfilesStore } from '$lib/stores/public_team_profiles.svelte.js';
 
 	// user profile is being loaded in layout for entire /app context
 	let { data, children } = $props();
@@ -14,6 +15,7 @@
 	setProfileStore(userProfile);
 	setUrlPathStore();
 	setStoriesStore();
+	setPublicTeamProfilesStore();
 </script>
 
 <div class="h-full w-full">

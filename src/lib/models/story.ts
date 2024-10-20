@@ -1,25 +1,27 @@
 export interface Story {
-	id: string;
-	count: number;
-	creator: PublicUser;
-	assignee: PublicUser | undefined;
+	uuid: string;
+	creator: string;
+	// count: number;
+	assignee: string | undefined;
 	team: string | undefined;
 	project: string | undefined;
 	feature: string | undefined;
-	created: Date;
-	updated: Date;
-	closed: Date | undefined;
+	created_at: Date;
+	updated_at: Date;
+	closed_at: Date | null;
 	status: 'icebox' | 'in progress' | 'in review' | 'completed';
 	title: string;
 	description: string;
-	estimation: StorypointEstimation | undefined;
+	estimation: StorypointEstimation | null;
 	acceptance_criteria: AcceptanceCriterium[] | undefined;
+	history: StoryHistory[];
 }
 
 export interface NewStory {
-	creator: string;
-	team: string | undefined;
-	project: string | undefined;
+	assignee: string | null;
+	team: string | null;
+	project: string | null;
+	feature: null;
 	status: 'icebox';
 	title: string;
 	description: string;
@@ -32,13 +34,24 @@ export interface StorypointEstimation {
 }
 
 export interface PublicUser {
-	id: string;
+	uuid: string;
 	username: string;
 	avatar: string;
 }
 
 export interface AcceptanceCriterium {
 	uuid: string;
+	story_uuid: string;
 	description: string;
-	completed: boolean;
+	accepted_at: Date | null;
+	accepted_by: string | null;
+}
+
+export interface StoryHistory {
+	uuid: string;
+	story_uuid: string;
+	from_status: string;
+	to_status: string;
+	date: Date;
+	by: string;
 }

@@ -23,7 +23,7 @@
 					<input name="token" type="hidden" />
 					<Button
 						class="flex w-full flex-row gap-x-4"
-						href="http://localhost:8082/oauth/login/github"
+						href="http://localhost:8081/oauth/login/github"
 					>
 						<Github />
 						<p>Sign in with Github</p>

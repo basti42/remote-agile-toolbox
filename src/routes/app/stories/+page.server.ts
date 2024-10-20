@@ -1,13 +1,12 @@
 import type { Story } from '$lib/models/story';
-import { pb } from '$lib/pocketbase';
 
-export const load = async () => {
+export const load = async ({fetch}) => {
 	let stories!: Story[];
 	try {
-		const response = await pb
-			.collection('stories')
-			.getFullList<Story>({ sort: '-created', expand: 'creator,assingee' });
-		stories = response;
+		const response = await fetch("http://localhost:8082/rat/stories");
+		const data: Story[] = await response.json();
+		console.debug("stories data: ", data);
+		stories = data;
 	} catch (error) {
 		console.error('error loading stories: ', error);
 	}
