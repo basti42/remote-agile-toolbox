@@ -5,7 +5,7 @@ export const load = async ({fetch}) => {
 	try {
 		const response = await fetch("http://localhost:8082/rat/stories");
 		const data: Story[] = await response.json();
-		console.debug("stories data: ", data);
+		// console.debug("stories data: ", data);
 		stories = data;
 	} catch (error) {
 		console.error('error loading stories: ', error);

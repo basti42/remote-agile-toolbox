@@ -1,20 +1,34 @@
 <script lang="ts">
 	import * as Sheet from '$lib/components/ui/sheet';
+	import * as Select from '$lib/components/ui/select';
 	import { Button } from '$lib/components/ui/button';
 	import Label from '$lib/components/ui/label/label.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { getStoriesStore } from '$lib/pocketbase/stories.svelte';
 	import type { NewStory } from '$lib/models/story';
+	import { getPublicTeamProfilesStore } from '$lib/stores/public_team_profiles.svelte';
 
 	const storiesStore = getStoriesStore();
+	const publicTeamProfilesStore = getPublicTeamProfilesStore();
 
 	let title = $state('');
 	let description = $state('');
+	let assignee_uuid = $state<string|null>(null);
+
+	interface SelectOption {
+		value: string | null;
+		label: string;
+	}
+
+	let options = publicTeamProfilesStore
+		.getPublicTeamProfiles()
+		.map((pub) => { return {value: pub.uuid, label: pub.username} as SelectOption });
+	options.unshift({value: null, label: "unassigned"} as SelectOption);
 
 	const handleCreateStory = () => {
 		const newStory = {
-			assignee: null,
+			assignee: assignee_uuid,
 			team: null,
 			project: null,
 			feature: null,
@@ -23,6 +37,9 @@
 			status: 'icebox'
 		} satisfies NewStory;
 		storiesStore.addStory(newStory);
+		title = "";
+		description = "";
+		assignee_uuid = null;
 	};
 </script>
 
@@ -50,6 +67,19 @@
 					bind:value={description}
 					class="col-span-3 row-span-4 resize-none"
 				/>
+			</div>
+			<div class="grid grid-cols-4 items-center gap-4">
+				<Label for="assignee" class="text-right">Assignee</Label>
+				<Select.Root onSelectedChange={(v) => { assignee_uuid = v?.value as string }} >
+					<Select.Trigger class="col-span-3">
+						<Select.Value placeholder="unassigned"></Select.Value>
+					</Select.Trigger>
+					<Select.Content>
+						{#each options as opts}
+							<Select.Item value={opts.value}>{opts.label}</Select.Item>
+						{/each}
+					</Select.Content>
+				</Select.Root>
 			</div>
 		</div>
 
