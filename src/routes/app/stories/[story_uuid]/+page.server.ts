@@ -4,10 +4,12 @@ import { error } from '@sveltejs/kit';
 
 export const load = async ({params, fetch}) => {
     try {
+        console.log("received story uuid = ", params.story_uuid);
         const respo = await fetch(`http://localhost:8082/rat/stories/${params.story_uuid}`);
-        const story: Story = await respo.json();
+        const selected_story: Story = await respo.json();
+        console.log("selected_story: ", selected_story);
         return {
-            story
+            selected_story
         }
     } catch(err) {
         console.error(err);

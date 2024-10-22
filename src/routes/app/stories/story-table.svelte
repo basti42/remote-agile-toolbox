@@ -25,7 +25,7 @@
 			<Table.Row>
 				<Table.Cell>{idx + 1}</Table.Cell>
 				<Table.Cell class="truncate">
-					<a href="/app/stories/{story.uuid}">
+					<a href="/app/stories/{story.uuid}" data-sveltekit-preload-data="tap">
 						{story.title}
 					</a>
 				</Table.Cell>

@@ -7,3 +7,7 @@
 </script>
 
 <h1>Teams</h1>
+
+<div class="grid grid-cols-4">
+	
+</div>	

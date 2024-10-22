@@ -4,11 +4,13 @@ import { getContext, setContext } from "svelte";
 class PublicTeamProfilesStore {
     publicProfiles: Map<string, PublicUser> = new Map();
 
+    // TODO implement properly
+
     constructor() {
         $effect(() => {
             const m = new Map<string, PublicUser>();
-            m.set("1858f3ab-9cb3-4b15-96b6-c4407cc7cfc7", {
-                uuid: "1858f3ab-9cb3-4b15-96b6-c4407cc7cfc7",
+            m.set("e0a54d2e-d597-46e7-a50c-49af302460c9", {
+                uuid: "e0a54d2e-d597-46e7-a50c-49af302460c9",
                 username: "Basti",
                 avatar: "https://avatars.githubusercontent.com/u/24679920?v=4"
             } satisfies PublicUser);

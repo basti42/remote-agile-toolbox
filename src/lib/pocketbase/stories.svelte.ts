@@ -44,18 +44,25 @@ class StoriesStore {
 		});
 	}
 
-	updateStoryStatus(story_id: string, newStatus: string) {
-
-		console.debug("unimplemented update story status ", story_id, newStatus,);
-		// pb.collection('stories')
-		// 	.update<Story>(story_id, { status: newStatus })
-		// 	.then((updatedStory) => {
-		// 		const idx = this.stories.findIndex((s) => s.uuid === story_id);
-		// 		this.stories[idx] = updatedStory;
-		// 	})
-		// 	.catch((err) => {
-		// 		console.error(`error updating story=${story_id}: ${err}`);
-		// 	});
+	async updateStoryStatus(story_id: string, oldStatus: string, newStatus: string) {
+		fetch(`http://localhost:8082/rat/stories/${story_id}/status`, {
+			method: 'POST',
+			body: JSON.stringify({
+				from_status: oldStatus,
+				to_status: newStatus
+			})
+		})
+		.then(response => {
+			console.debug("ok response from POST to update story status: ", response.ok);
+			response.json()
+				.then((updatedStory: Story) => {
+					console.debug("updated Story: ", updatedStory);
+					// update the stories store
+					this.stories.map((story) => { if (story.uuid === updatedStory.uuid) {return updatedStory} else return story });
+				})
+				.catch(err => { console.error("error unpacking updated story ", err) });
+		})
+		.catch( err => { console.error("error updating story: ", err) });
 	}
 }
 

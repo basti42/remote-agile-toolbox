@@ -55,3 +55,31 @@ export interface StoryHistory {
 	date: Date;
 	by: string;
 }
+
+export interface StoryTransition {
+	value: string
+	label: string
+}
+export const getStoryTransitions = (status: string) : StoryTransition[] =>  {
+	if (status === "icebox") {
+		return [
+			{ value: "in progress", label: "start progress" },
+			{ value: "completed", label: "complete" }
+		]
+	} else if (status === "in progress") {
+		return [
+			{ value: "icebox", label: "stop progress" },
+			{ value: "in review", label: "resolve" }
+		]
+	} else if (status === "in review") {
+		return [
+			{ value: "in progress", label: "request alteration" },
+			{ value: "completed", label: "complete" }
+		]
+	} else if (status === "completed") {
+		return [
+			{ value: "icebox", label: "re-open" }
+		]
+	}
+	return [];
+}
