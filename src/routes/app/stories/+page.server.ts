@@ -18,15 +18,15 @@ export const load = async ({fetch}) => {
 
 export const actions = {
     addnewstory: async ({request, fetch}) => {
-        console.log("form action for new story creation");
+        console.debug("form action for new story creation");
 		const data = await request.formData();
 		const title = data.get("new_story_title");
-		console.log("\tnew story title: ", title);
+		console.debug("\tnew story title: ", title);
 		const description = data.get("new_story_description");
-		console.log("\tnew story description: ", description);
+		console.debug("\tnew story description: ", description);
 		let assignee_uuid: string | null = data.get("new_story_assignee") as string;
 		if (assignee_uuid.length <= 0) { assignee_uuid = null; }
-		console.log("\tnew story assignee: ", assignee_uuid);
+		console.debug("\tnew story assignee: ", assignee_uuid);
 
 		const newStory = {
 			assignee: assignee_uuid,
@@ -65,7 +65,7 @@ export const actions = {
 			}
 
 		} catch (error) {
-			console.log("error creating new story on backend: ", error);
+			console.debug("error creating new story on backend: ", error);
 			return {
 				success: false,
 				newStory: null
