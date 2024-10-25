@@ -5,14 +5,35 @@
 	import { getStoriesStore } from '$lib/pocketbase/stories.svelte';
 	import NewStorySheet from '$lib/components/internal/NewStorySheet.svelte';
 	import * as ToggleGroup from '$lib/components/ui/toggle-group';
+	import { getPublicTeamProfilesStore } from '$lib/stores/public_team_profiles.svelte';
 
-	let { data } = $props();
+	let { data, form } = $props();
+	console.log("form data from +page.server.ts: ", form);
 
 	const urlPathStore = getUrlPathStore();
 	urlPathStore.update($page.url.pathname);
 
 	const storiesStore = getStoriesStore();
 	storiesStore.updateStories(data.stories);
+
+	if (form?.newStory) {
+		storiesStore.addStory(form.newStory);
+	}
+
+
+	interface SelectOption {
+		value: string | null;
+		label: string;
+	}
+
+	const publicTeamProfilesStore = getPublicTeamProfilesStore();
+	let options = publicTeamProfilesStore
+		.getPublicTeamProfiles()
+		.map((pub) => { return {value: pub.uuid, label: pub.username} as SelectOption });
+	options.unshift({value: null, label: "unassigned"} as SelectOption);
+
+	let dialogOpen = $state(false);
+
 </script>
 
 <div class="my-4 flex w-full flex-row items-center justify-between">
@@ -26,12 +47,12 @@
 				<ToggleGroup.Item value="c">C</ToggleGroup.Item>
 			</ToggleGroup.Root>
 		</div>
-		<NewStorySheet />
+		<NewStorySheet form={form}/>
 	{:else}
 		<div class="flex flex-col items-center mx-auto gap-y-4">
 			<span>You don't have any stories yet,</span>
 			<span> lets get started and create one</span>
-			<NewStorySheet />
+			<NewStorySheet form={form}/>
 		</div>
 	{/if}
 </div>

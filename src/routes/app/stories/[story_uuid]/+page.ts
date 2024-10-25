@@ -6,8 +6,10 @@ export const load = async ({params, fetch}) => {
     try {
         console.log("received story uuid = ", params.story_uuid);
         const respo = await fetch(`http://localhost:8082/rat/stories/${params.story_uuid}`);
+
+        // TODO error handling 
         const selected_story: Story = await respo.json();
-        console.log("selected_story: ", selected_story);
+        // console.log("selected_story: ", selected_story);
         return {
             selected_story
         }

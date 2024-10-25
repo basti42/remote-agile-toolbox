@@ -40,3 +40,20 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// response.headers.append('set-cookie', cookie);
 	return response;
 };
+
+
+export const handleFetch = async({request, fetch, event}) => {
+	const cookie = event.cookies.get("rat-cookie");
+	// console.log("Token from cookie: ", cookie);
+
+	const cookieData = JSON.parse(cookie as string);
+	// console.log("cookie Data: ", cookieData);
+	
+	const accessToken = cookieData.access_token;
+	console.log("request url: ", request.url);
+	console.log("acces token: ", accessToken);
+
+	request.headers.set("Authorization", `Bearer ${accessToken}`);
+
+	return fetch(request);
+}

@@ -1,68 +1,48 @@
-import type { NewStory, Story } from '$lib/models/story';
+import type { Story } from '$lib/models/story';
 import { getContext, setContext } from 'svelte';
 
 class StoriesStore {
 	stories = $state<Story[]>([]);
 
 	constructor() {
-		$effect(() => {
-			fetch("http://localhost:8082/rat/stories")
-				.then(resp => { 
-					resp.json()
-						.then(stories => this.stories = stories)
-						.catch(err => {
-							console.error("error unpacking intital stories: ", err);
-						})
-				 }).catch(err => {
-					console.error("error loading initial stories data: ", err);
-				 });
-		});
+		this.stories = [];
 	}
 
 	updateStories(stories: Story[]) {
 		this.stories = stories;
 	}
 
-	async addStory(newStory: NewStory) {
-		fetch('http://localhost:8082/rat/stories', {
-			method: 'POST',
-			// headers: {
-			// 	'content-type': 'application/josn',
-			// 	'accept': 'application/json'
-			// },
-			body: JSON.stringify(newStory)
-		})
-		.then(response => {
-			console.debug("ok response from POST create new story: ", response.ok);
-			response.json()
-				.then((story: Story) => { 
-					console.debug("added new story: ", story);
-					this.stories.unshift(story) })
-				.catch(err => { console.error("error unpacking new story: ", err); });
-		}).catch(err => {
-			console.error("error adding new story: ", err);
-		});
+	async addStory(newStory: Story) {
+		this.stories.unshift(newStory);
 	}
 
 	async updateStoryStatus(story_id: string, oldStatus: string, newStatus: string) {
-		fetch(`http://localhost:8082/rat/stories/${story_id}/status`, {
-			method: 'POST',
-			body: JSON.stringify({
-				from_status: oldStatus,
-				to_status: newStatus
-			})
-		})
-		.then(response => {
-			console.debug("ok response from POST to update story status: ", response.ok);
-			response.json()
-				.then((updatedStory: Story) => {
-					console.debug("updated Story: ", updatedStory);
-					// update the stories store
-					this.stories.map((story) => { if (story.uuid === updatedStory.uuid) {return updatedStory} else return story });
-				})
-				.catch(err => { console.error("error unpacking updated story ", err) });
-		})
-		.catch( err => { console.error("error updating story: ", err) });
+
+		console.log("unimplemented story status updating");
+		console.log(`${story_id}: ${oldStatus} ---> ${newStatus}`);
+
+		// fetch(`http://localhost:8082/rat/stories/${story_id}/status`, {
+		// 	method: 'POST',
+		// 	headers: {
+		// 		'content-type': 'application/josn',
+		// 		'accept': 'application/json'
+		// 	},
+		// 	body: JSON.stringify({
+		// 		from_status: oldStatus,
+		// 		to_status: newStatus
+		// 	})
+		// })
+		// .then(response => {
+		// 	console.debug("ok response from POST to update story status: ", response.ok);
+		// 	response.json()
+		// 		.then((updatedStory: Story) => {
+		// 			console.debug("updated Story: ", updatedStory);
+		// 			// update the stories store
+		// 			this.stories.map((story) => { if (story.uuid === updatedStory.uuid) {return updatedStory} else return story });
+		// 		})
+		// 		.catch(err => { console.error("error unpacking updated story ", err) });
+		// })
+		// .catch( err => { console.error("error updating story: ", err) });
 	}
 }
 

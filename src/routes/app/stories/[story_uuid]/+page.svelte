@@ -13,7 +13,7 @@
 
 
     let {data} = $props();
-	let description = $state(data.selected_story.description);
+	let description = $state(data.selected_story.description || "");
 
     const urlPathStore = getUrlPathStore();
 	urlPathStore.update($page.url.pathname);
@@ -45,7 +45,7 @@
 <div class="flex flex-row w-full items-center justify-between gap-y-4 border-b-2 py-2">
 	<h1>{data.selected_story.title}</h1>
 	<div class="">
-		<Select.Root 
+		<Select.Root
 			onSelectedChange={(v) => { updateStatus(v?.value as string) }}>
 			<Select.Trigger class="w-[180px]" id="status_selector">
 				<Select.Value placeholder={data.selected_story.status} />
