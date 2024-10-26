@@ -5,13 +5,10 @@
 	import Label from '$lib/components/ui/label/label.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import { Textarea } from '$lib/components/ui/textarea';
-	import type { NewStory } from '$lib/models/story';
 	import { getPublicTeamProfilesStore } from '$lib/stores/public_team_profiles.svelte';
 	import { enhance } from '$app/forms';
-	import type { ActionData } from '../../../routes/app/stories/$types';
 
 	let {form = $bindable()} = $props();
-	console.log("form prop in new story sheet: ", form);
 
 	const publicTeamProfilesStore = getPublicTeamProfilesStore();
 

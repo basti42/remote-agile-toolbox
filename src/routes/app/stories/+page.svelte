@@ -8,7 +8,6 @@
 	import { getPublicTeamProfilesStore } from '$lib/stores/public_team_profiles.svelte';
 
 	let { data, form } = $props();
-	console.log("form data from +page.server.ts: ", form);
 
 	const urlPathStore = getUrlPathStore();
 	urlPathStore.update($page.url.pathname);

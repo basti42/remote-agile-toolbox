@@ -8,11 +8,12 @@
 	import { getUrlPathStore } from '$lib/stores/breadcrumb.svelte.js';
 	import { Label } from '$lib/components/ui/label';
 	import { getPublicTeamProfilesStore } from '$lib/stores/public_team_profiles.svelte';
-	import {getStoryTransitions} from '$lib/models/story.js';
+	import {getStoryTransitions, type StoryTransition} from '$lib/models/story.js';
 	import { getStoriesStore } from '$lib/pocketbase/stories.svelte';
+	import { enhance } from '$app/forms';
 
 
-    let {data} = $props();
+    let {data, form} = $props();
 	let description = $state(data.selected_story.description || "");
 
     const urlPathStore = getUrlPathStore();
@@ -20,6 +21,11 @@
 
 	const publicTeamProfilesStore = getPublicTeamProfilesStore();
 	const storiesStore = getStoriesStore();
+
+	if (form?.updatedStory) {
+		storiesStore.updateStory(form.updatedStory);
+	}
+
 
 	const hasChanged = $derived.by(() => {
 		if (description !== data.selected_story.description) return true;
@@ -30,13 +36,15 @@
 		console.log(description);
 	}
 
-	const updateStatus = async (newStatus: string) => {
-		console.log("updated status = ", newStatus);
-		await storiesStore.updateStoryStatus(
-			data.selected_story.uuid,
-			data.selected_story.status,
-			newStatus
-		)
+	let updateStatusForm: HTMLFormElement;
+	const statusOptions = getStoryTransitions(data.selected_story.status);
+	let currentStatusOption = $state({value: data.selected_story.status, label: data.selected_story.status});
+	let statusSelectionDisabled = $state(data.selected_story.status === "completed");
+
+	const updateNewStoryStatus = (newStatus: string) => {
+		console.log("updating story status with new status: ", newStatus);
+		(updateStatusForm.elements.namedItem("new_status") as HTMLInputElement).value = newStatus;
+		updateStatusForm.submit();
 	}
 
 </script>
@@ -44,20 +52,28 @@
 
 <div class="flex flex-row w-full items-center justify-between gap-y-4 border-b-2 py-2">
 	<h1>{data.selected_story.title}</h1>
+	<!-- TODO -->
 	<div class="">
-		<Select.Root
-			onSelectedChange={(v) => { updateStatus(v?.value as string) }}>
-			<Select.Trigger class="w-[180px]" id="status_selector">
-				<Select.Value placeholder={data.selected_story.status} />
-			</Select.Trigger>
-			<Select.Content>
-				{#each getStoryTransitions(data.selected_story.status) as transition}
-				<Select.Item class="cursor-pointer" 
-					value={transition.value}>{transition.label}</Select.Item>
-				{/each}
-			</Select.Content>
-		</Select.Root>
+		<form method="POST" action="?/updateStoryStatus" 
+		 bind:this={updateStatusForm} use:enhance>
+			 <input type="hidden" id="story_id" name="story_id" value={data.selected_story.uuid} />
+			 <input type="hidden" id="old_status" name="old_status" value={data.selected_story.status} />
+			<input type="hidden" id="new_status" name="new_status" bind:value={currentStatusOption.value}/>
 
+			<Select.Root bind:disabled={statusSelectionDisabled}
+				bind:selected={currentStatusOption}
+				onSelectedChange={(v) => { updateNewStoryStatus(v?.value as string) }}>
+				<Select.Trigger class="w-[180px]" id="status_selector">
+					<Select.Value placeholder={data.selected_story.status} />
+				</Select.Trigger>
+				<Select.Content>
+					{#each getStoryTransitions(data.selected_story.status) as transition}
+					<Select.Item class="cursor-pointer" 
+						value={transition.value}>{transition.label}</Select.Item>
+					{/each}
+				</Select.Content>
+			</Select.Root>
+		</form>
 
 	</div>
 </div>

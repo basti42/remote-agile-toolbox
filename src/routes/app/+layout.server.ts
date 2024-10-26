@@ -9,36 +9,12 @@ export const load = async ({ locals }) => {
 		throw redirect(302, '/auth/login');
 	}
 
-	// // get the current user's profile for any displaying purposes
-	// // create one if none exists yet
-	// const currentUser: AuthModel = locals.pb.authStore.model;
-
-	let profile!: UserProfile;
-	try {
-		profile = await locals.pb
-			.collection('profiles')
-			.getFirstListItem<UserProfile>('user_id="' + locals.auth.user.id + '"');
-		// console.debug(`found profile for user with ID=${currentUser?.id}: `, profile);
-	} catch (err) {
-		console.debug(`No profile found for user with ID=${locals.auth.user.id}. Error: ${err}`);
-		// console.debug("trying to create one");
-		const newProfile = {
-			display_name: 'Raccon',
-			abbreviation: 'Ra',
-			bio: '',
-			quote: '',
-			role: 'user',
-			user_id: locals.auth.user.id
-		};
-
-		try {
-			profile = await locals.pb.collection('profiles').create<UserProfile>(newProfile);
-		} catch (err) {
-			console.log(`error creating new profile: ${err}`);
-		}
-	}
+	// get the current user's profile for any displaying purposes
+	// on first login make sure a profile is created on login route
 
 	return {
-		userProfile: profile
+		userProfile: await locals.pb
+		.collection('profiles')
+		.getFirstListItem<UserProfile>('user_id="' + locals.auth.user.id + '"')
 	};
 };

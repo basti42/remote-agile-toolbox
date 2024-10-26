@@ -9,8 +9,8 @@ class PublicTeamProfilesStore {
     constructor() {
         $effect(() => {
             const m = new Map<string, PublicUser>();
-            m.set("e0a54d2e-d597-46e7-a50c-49af302460c9", {
-                uuid: "e0a54d2e-d597-46e7-a50c-49af302460c9",
+            m.set("8d98e580-fca2-48f2-bac3-b6e871892589", {
+                uuid: "8d98e580-fca2-48f2-bac3-b6e871892589",
                 username: "Basti",
                 avatar: "https://avatars.githubusercontent.com/u/24679920?v=4"
             } satisfies PublicUser);
