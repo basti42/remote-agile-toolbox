@@ -1,11 +1,25 @@
 export interface UserProfile {
-	id: string;
-	display_name: string;
+	uuid: string;
+	name: string;
 	abbreviation: string;
+	avatar_url: string;
 	bio: string;
 	quote: string;
 	role: string;
-	created: string;
-	updated: string;
-	user_id: string;
+	created_at: string;
+	updated_at: string;
+	user_uuid: string;
+}
+
+export interface PublicUser {
+	uuid: string;
+	name: string;
+	avatar: string;
+}
+
+export interface ProfileUpdateRequest {
+	name: string;
+	abbreviation: string;
+	bio: string;
+	quote: string;
 }

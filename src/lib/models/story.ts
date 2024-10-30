@@ -15,6 +15,7 @@ export interface Story {
 	estimation: StorypointEstimation | null;
 	acceptance_criteria: AcceptanceCriterium[] | undefined;
 	history: StoryHistory[];
+	comments: Comment[];
 }
 
 export interface NewStory {
@@ -33,12 +34,6 @@ export interface StorypointEstimation {
 	effort: number;
 }
 
-export interface PublicUser {
-	uuid: string;
-	username: string;
-	avatar: string;
-}
-
 export interface AcceptanceCriterium {
 	uuid: string;
 	story_uuid: string;
@@ -54,6 +49,15 @@ export interface StoryHistory {
 	to_status: string;
 	date: Date;
 	by: string;
+}
+
+export interface Comment {
+	id: number;
+	created_at: Date;
+	updated_at: Date;
+	story_uuid: string | null;
+	user_uuid: string;
+	text: string;
 }
 
 export interface StoryTransition {

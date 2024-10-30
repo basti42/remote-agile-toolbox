@@ -111,7 +111,7 @@
 			<div class="grid grid-cols-4 items-center gap-4">
 				<Label for="assignee">Assignee</Label>
 				<span class="cols-span-3">
-					{ publicTeamProfilesStore.getPublicTeamProfilebyUUID(data.selected_story.assignee)?.username }
+					{ publicTeamProfilesStore.getPublicTeamProfilebyUUID(data.selected_story.assignee)?.name }
 				</span>
 			</div>
 			<div class="grid grid-cols-4 items-center gap-4">

@@ -34,6 +34,7 @@ export const load = async (event: PageServerLoadEvent) => {
 			// TODO handle setting access token cookie
 			console.debug(data);
 
+			// set token and user info in token
 			event.cookies.set('rat-cookie', JSON.stringify(data), {
 				path: '/',
 				httpOnly: true,

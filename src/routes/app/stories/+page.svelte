@@ -28,7 +28,7 @@
 	const publicTeamProfilesStore = getPublicTeamProfilesStore();
 	let options = publicTeamProfilesStore
 		.getPublicTeamProfiles()
-		.map((pub) => { return {value: pub.uuid, label: pub.username} as SelectOption });
+		.map((pub) => { return {value: pub.uuid, label: pub.name} as SelectOption });
 	options.unshift({value: null, label: "unassigned"} as SelectOption);
 
 	let dialogOpen = $state(false);

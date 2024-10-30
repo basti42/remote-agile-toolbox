@@ -1,19 +1,17 @@
-import type { PublicUser } from "$lib/models/story";
+import type { PublicUser } from "$lib/models/profile";
 import { getContext, setContext } from "svelte";
 
 class PublicTeamProfilesStore {
-    publicProfiles: Map<string, PublicUser> = new Map();
+    publicProfiles: Map<string, PublicUser> = $state(new Map());
 
     // TODO implement properly
 
-    constructor() {
+    constructor(publicProfiles: PublicUser[]) {
         $effect(() => {
             const m = new Map<string, PublicUser>();
-            m.set("8d98e580-fca2-48f2-bac3-b6e871892589", {
-                uuid: "8d98e580-fca2-48f2-bac3-b6e871892589",
-                username: "Basti",
-                avatar: "https://avatars.githubusercontent.com/u/24679920?v=4"
-            } satisfies PublicUser);
+            for (const pub of publicProfiles) {
+                m.set(pub.uuid, pub);
+            }
             this.publicProfiles = m;
         });
     }
@@ -38,8 +36,8 @@ class PublicTeamProfilesStore {
 const PUBLIC_TEAM_PROFILES_STORE = 'public_team_profiles_store';
 export type { PublicTeamProfilesStore as PublicTeamProfileStore };
 
-export function setPublicTeamProfilesStore(): PublicTeamProfilesStore {
-	const newPublicTeamProfilesStore = new PublicTeamProfilesStore();
+export function setPublicTeamProfilesStore(publicProfiles: PublicUser[]): PublicTeamProfilesStore {
+	const newPublicTeamProfilesStore = new PublicTeamProfilesStore(publicProfiles);
 	setContext(PUBLIC_TEAM_PROFILES_STORE, newPublicTeamProfilesStore);
 	return newPublicTeamProfilesStore;
 }

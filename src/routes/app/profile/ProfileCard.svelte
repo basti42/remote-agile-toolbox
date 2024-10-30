@@ -5,84 +5,88 @@
 	import { Input } from '$lib/components/ui/input';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { getProfileStore } from '$lib/pocketbase/profile.svelte';
+	import { enhance } from '$app/forms';
 
 	let profileStore = getProfileStore();
 
 	let tmpProfile = $state({
-		id: profileStore.profile.id,
-		display_name: profileStore.profile.display_name,
+		uuid: profileStore.profile.uuid,
+		user_uuid: profileStore.profile.user_uuid,
+		name: profileStore.profile.name,
 		abbreviation: profileStore.profile.abbreviation,
+		avatar_url: profileStore.profile.avatar_url,
 		bio: profileStore.profile.bio,
 		quote: profileStore.profile.quote,
 		role: profileStore.profile.role,
-		created: profileStore.profile.created,
-		updated: profileStore.profile.updated
+		created_at: profileStore.profile.created_at,
+		updated_at: profileStore.profile.updated_at
 	} satisfies UserProfile);
 
+
+	let profileUpdateForm: HTMLFormElement;
 	const updateProfile = () => {
 		console.debug('trying to update with profile: ', tmpProfile);
-		profileStore.update(tmpProfile);
+		profileUpdateForm.submit()
+
+		// profileStore.update(tmpProfile);
 	};
 </script>
 
-<form>
-	<Card.Root class="w-full">
-		<Card.Header>
-			<Card.Title class="flex flex-row items-center justify-between border-b-2 py-2">
-				<div>
-					{profileStore.profile.display_name}
-				</div>
-				<div class="flex flex-col">
-					<p class="text-sm font-thin">created</p>
-					<p class="text-sm font-thin">{new Date(profileStore.profile.created).toLocaleString()}</p>
-				</div>
-			</Card.Title>
-			<Card.Description class="text-md font-thin"
-				>{'"' + profileStore.profile.quote + '"' ||
-					'"your wisdom could be displayed here"'}</Card.Description
-			>
-		</Card.Header>
-		<Card.Content>
-			<Input id="projectId" type="hidden" />
+<Card.Root class="w-full">
+	<Card.Header>
+		<Card.Title class="flex flex-row items-center justify-between border-b-2 py-2">
+			<div>
+				{profileStore.profile.name}
+			</div>
+			<div class="flex flex-col">
+				<p class="text-sm font-thin">created</p>
+				<p class="text-sm font-thin">{new Date(profileStore.profile.created_at).toLocaleString()}</p>
+			</div>
+		</Card.Title>
+		<Card.Description class="text-md font-thin"
+			>{'"' + profileStore.profile.quote + '"' ||
+				'"your wisdom could be displayed here"'}</Card.Description
+		>
+	</Card.Header>
+	<Card.Content>
+		<Input id="projectId" type="hidden" />
+		<form action="?/updateProfile" method="POST" bind:this={profileUpdateForm} use:enhance>
+			<input type="hidden" id="profile_uuid" name="profile_uuid" value={profileStore.profile.uuid} />
 			<div class="grid w-full items-center gap-4">
 				<div class="flex flex-col space-y-1.5">
 					<Label for="name" class="text-sm font-light">
 						Name
-						<!-- <span class="text-sm font-thin">How do you want to be know?</span> -->
+						<Input id="name" name="name" bind:value={tmpProfile.name} />
 					</Label>
-					<Input id="name" bind:value={tmpProfile.display_name} />
 				</div>
 				<div class="flex flex-col space-y-1.5">
 					<Label for="abbreviation" class="text-sm font-light">
 						Abbreviation
-						<!-- <span class="text-sm font-thin">How would you like your name to be abbreviated?</span> -->
+						<Input id="abbreviation" name="abbreviation" bind:value={tmpProfile.abbreviation} />
 					</Label>
-					<Input id="abbreviation" bind:value={tmpProfile.abbreviation} />
 				</div>
 				<div class="flex flex-col space-y-1.5">
 					<Label for="bio" class="text-sm font-light">
 						Bio
-						<!-- <span class="text-sm font-thin">Let others know something about you</span> -->
+						<Input id="bio" name="bio" bind:value={tmpProfile.bio} />
 					</Label>
-					<Input id="bio" bind:value={tmpProfile.bio} />
 				</div>
 				<div class="flex flex-col space-y-1.5">
 					<Label for="quote" class="text-sm font-light">
 						Quote
-						<!-- <span class="text-sm font-thin">Your Tagline</span> -->
+						<Input id="quote" name="quote" bind:value={tmpProfile.quote} />
 					</Label>
-					<Input id="quote" bind:value={tmpProfile.quote} />
 				</div>
 			</div>
-		</Card.Content>
-		<Card.Footer class="flex flex-row items-center justify-between">
-			<div class="flex flex-col">
-				<p class="text-sm font-thin">last updated</p>
-				<p class="text-sm font-thin">{new Date(profileStore.profile.updated).toLocaleString()}</p>
-			</div>
-			<div>
-				<Button onclick={updateProfile}>Update</Button>
-			</div>
-		</Card.Footer>
-	</Card.Root>
-</form>
+		</form>
+	</Card.Content>
+	<Card.Footer class="flex flex-row items-center justify-between">
+		<div class="flex flex-col">
+			<p class="text-sm font-thin">last updated</p>
+			<p class="text-sm font-thin">{new Date(profileStore.profile.updated_at).toLocaleString()}</p>
+		</div>
+		<div>
+			<Button onclick={updateProfile}>Update</Button>
+		</div>
+	</Card.Footer>
+</Card.Root>

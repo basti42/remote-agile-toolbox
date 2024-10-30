@@ -7,15 +7,19 @@
 	import AvatarDropDown from '$lib/components/internal/AvatarDropDown.svelte';
 	import { setStoriesStore } from '$lib/pocketbase/stories.svelte.js';
 	import { setPublicTeamProfilesStore } from '$lib/stores/public_team_profiles.svelte.js';
+	import { setTeamsStore } from '$lib/stores/teams.svelte';
 
 	// user profile is being loaded in layout for entire /app context
 	let { data, children } = $props();
-	let { userProfile } = data;
+	let { userProfile, teams } = data;
+
+	// console.debug("gotten new userProfile and teams: ", userProfile, teams);
 
 	setProfileStore(userProfile);
+	const teamsStore = setTeamsStore(teams);
 	setUrlPathStore();
 	setStoriesStore();
-	setPublicTeamProfilesStore();
+	setPublicTeamProfilesStore(teamsStore.getOwnTeams(userProfile.user_uuid)[0].members);
 </script>
 
 <div class="h-full w-full">
