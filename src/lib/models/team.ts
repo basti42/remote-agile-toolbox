@@ -7,3 +7,8 @@ export interface Team {
     name: string;
     members: PublicUser[];
 }
+
+export interface NewTeamRequest {
+    name: string;
+    abbreviation: string;
+}

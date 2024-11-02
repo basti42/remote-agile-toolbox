@@ -17,6 +17,12 @@ export interface PublicUser {
 	avatar: string;
 }
 
+export interface NewProfileRequest {
+	name: string;
+	abbreviation: string;
+	avatar_url: string;
+}
+
 export interface ProfileUpdateRequest {
 	name: string;
 	abbreviation: string;
