@@ -27,8 +27,11 @@ export const actions = {
 		let assignee_uuid: string | null = data.get("new_story_assignee") as string;
 		if (assignee_uuid.length <= 0) { assignee_uuid = null; }
 		console.debug("\tnew story assignee: ", assignee_uuid);
+		const type = data.get("new_story_type");
+		console.debug("\tnew story type: type");
 
 		const newStory = {
+			type: type as string,
 			assignee: assignee_uuid,
 			team: null,
 			project: null,

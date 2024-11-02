@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import StoryOverviewCard from './story-overview-card.svelte';
 	import type { Story } from '$lib/models/story';
-	import { getStoriesStore } from '$lib/pocketbase/stories.svelte';
+	import { getStoriesStore } from '$lib/stores/stories.svelte';
 	import StoryOverviewSkeleton from './story-overview-skeleton.svelte';
 
 	let { data } = $props();

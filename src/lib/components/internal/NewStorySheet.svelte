@@ -23,6 +23,12 @@
 	options.unshift({value: null, label: "unassigned"} as SelectOption);
 	let assignee_selection = $state<SelectOption>(options[0]);
 
+	let typeOptions = [
+		{value: "story", label: "Story"},
+		{value: "bug", label: "Bug"}
+	] satisfies SelectOption[];
+	let type_selection = $state<SelectOption>(typeOptions[0]);
+
 	let openSheet = $state(false);
 	const handleSubmit = async () => {
 		console.log("closing sheet")
@@ -44,10 +50,12 @@
 		<form method="POST" action="?/addnewstory" use:enhance={handleSubmit}>
 			<!-- form to create a new story -->
 			<div class="grid gap-4 py-4">
+				<!-- TITLE -->
 				<div class="grid grid-cols-4 items-center gap-4">
 					<Label for="new_story_title" class="text-right">Title</Label>
 					<Input type="text" id="new_story_title" name="new_story_title" class="col-span-3" />
 				</div>
+				<!-- DESCRIPTION -->
 				<div class="grid grid-cols-4 items-center gap-4">
 					<Label for="new_story_description" class="text-right">Description</Label>
 					<Textarea
@@ -57,13 +65,9 @@
 						class="col-span-3 row-span-4 resize-none"
 					></Textarea>
 				</div>
+				<!-- ASSIGNEE -->
 				<div class="grid grid-cols-4 items-center gap-4">
 					<Label for="new_story_assignee" class="text-right">Assignee</Label>
-					<!-- <select id="new_story_assignee" name="new_story_assignee" class="select">
-						{#each options as opts}
-							<option value={opts.value}>{opts.label}</option>
-						{/each}						
-					</select> -->
 					<Select.Root bind:selected={assignee_selection} >
 						<Select.Trigger class="col-span-3">
 							<Select.Value placeholder={options[0].label}></Select.Value>
@@ -76,6 +80,23 @@
 					</Select.Root>
 					<Input type="hidden" name="new_story_assignee" bind:value={assignee_selection.value} />
 				</div>
+				<!-- TYPE -->
+				<div class="grid grid-cols-4 items-center gap-4">
+					<Label for="new_story_type" class="text-right">Type</Label>
+					<Select.Root bind:selected={type_selection} >
+						<Select.Trigger class="col-span-3">
+							<Select.Value placeholder={typeOptions[0].label}></Select.Value>
+						</Select.Trigger>
+						<Select.Content>
+							{#each typeOptions as opts}
+								<Select.Item value={opts.value}>{opts.label}</Select.Item>
+							{/each}
+						</Select.Content>
+					</Select.Root>
+					<Input type="hidden" name="new_story_type" bind:value={type_selection.value} />
+				</div>
+
+				<!-- SUBMIT BUTTON -->
 				<div class="flex flex-row-reverse justify-between items-center">
 					<Button variant="default" type="submit">Create</Button>
 					<Sheet.Close asChild let:builder>

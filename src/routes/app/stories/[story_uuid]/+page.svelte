@@ -9,7 +9,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import { getPublicTeamProfilesStore } from '$lib/stores/public_team_profiles.svelte';
 	import {getStoryTransitions, type StoryTransition} from '$lib/models/story.js';
-	import { getStoriesStore } from '$lib/pocketbase/stories.svelte';
+	import { getStoriesStore } from '$lib/stores/stories.svelte';
 	import { enhance } from '$app/forms';
 
 

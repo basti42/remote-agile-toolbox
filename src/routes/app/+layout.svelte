@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { Users, Milestone, House, Ticket } from 'lucide-svelte';
 	import BreadCrumb from '$lib/components/internal/BreadCrumb.svelte';
-	import { setProfileStore } from '$lib/pocketbase/profile.svelte.js';
+	import { setProfileStore } from '$lib/stores/profile.svelte.js';
 	import { setUrlPathStore } from '$lib/stores/breadcrumb.svelte.js';
 	import { Input } from '$lib/components/ui/input';
 	import AvatarDropDown from '$lib/components/internal/AvatarDropDown.svelte';
-	import { setStoriesStore } from '$lib/pocketbase/stories.svelte.js';
+	import { setStoriesStore } from '$lib/stores/stories.svelte.js';
 	import { setPublicTeamProfilesStore } from '$lib/stores/public_team_profiles.svelte.js';
 	import { setTeamsStore } from '$lib/stores/teams.svelte';
 

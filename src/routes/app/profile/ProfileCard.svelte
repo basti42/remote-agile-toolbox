@@ -4,7 +4,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import { getProfileStore } from '$lib/pocketbase/profile.svelte';
+	import { getProfileStore } from '$lib/stores/profile.svelte';
 	import { enhance } from '$app/forms';
 
 	let profileStore = getProfileStore();

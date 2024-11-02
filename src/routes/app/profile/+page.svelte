@@ -2,7 +2,7 @@
 	import { getUrlPathStore } from '$lib/stores/breadcrumb.svelte';
 	import ProfileCard from './ProfileCard.svelte';
 	import { page } from '$app/stores';
-	import { getProfileStore } from '$lib/pocketbase/profile.svelte';
+	import { getProfileStore } from '$lib/stores/profile.svelte';
 
 	let { form } = $props();
 

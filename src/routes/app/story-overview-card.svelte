@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card';
 	import Label from '$lib/components/ui/label/label.svelte';
-	import { getStoriesStore } from '$lib/pocketbase/stories.svelte';
+	import { getStoriesStore } from '$lib/stores/stories.svelte';
 
 	const storiesStore = getStoriesStore();
 

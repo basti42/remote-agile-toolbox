@@ -2,8 +2,9 @@
 	import { BrainCircuit, Dumbbell, TriangleAlert } from 'lucide-svelte';
 	import * as Table from '$lib/components/ui/table';
 	import * as Select from '$lib/components/ui/select';
-	import { getStoriesStore } from '$lib/pocketbase/stories.svelte';
+	import { getStoriesStore } from '$lib/stores/stories.svelte';
 	import { getPublicTeamProfilesStore } from '$lib/stores/public_team_profiles.svelte';
+	import {ListTodo, Bug} from 'lucide-svelte/icons'
 
 	const storiesStore = getStoriesStore();
 	const publicTeamProfilesStore = getPublicTeamProfilesStore();
@@ -14,6 +15,7 @@
 	<Table.Header>
 		<Table.Row>
 			<Table.Head>ID</Table.Head>
+			<Table.Head>Type</Table.Head>
 			<Table.Head>Title</Table.Head>
 			<Table.Head>Status</Table.Head>
 			<Table.Head>Assignee</Table.Head>
@@ -24,6 +26,13 @@
 		{#each storiesStore.stories as story, idx}
 			<Table.Row>
 				<Table.Cell>{idx + 1}</Table.Cell>
+				<Table.Cell>
+					{#if story.type === "story"}
+						<ListTodo color="dodgerblue" />
+					{:else }
+						<Bug color="red"/>
+					{/if}
+				</Table.Cell>
 				<Table.Cell class="truncate">
 					<a href="/app/stories/{story.uuid}" data-sveltekit-preload-data="tap">
 						{story.title}

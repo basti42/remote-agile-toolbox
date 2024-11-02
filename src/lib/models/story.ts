@@ -1,5 +1,6 @@
 export interface Story {
 	uuid: string;
+	type: 'story' | 'bug';
 	creator: string;
 	// count: number;
 	assignee: string | undefined;
@@ -19,6 +20,7 @@ export interface Story {
 }
 
 export interface NewStory {
+	type: string;
 	assignee: string | null;
 	team: string | null;
 	project: string | null;

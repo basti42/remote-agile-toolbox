@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getProfileStore } from '$lib/pocketbase/profile.svelte';
+	import { getProfileStore } from '$lib/stores/profile.svelte';
 	import * as DropDown from '$lib/components/ui/dropdown-menu';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Avatar from '$lib/components/ui/avatar';

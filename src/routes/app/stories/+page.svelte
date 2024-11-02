@@ -2,7 +2,7 @@
 	import { getUrlPathStore } from '$lib/stores/breadcrumb.svelte';
 	import { page } from '$app/stores';
 	import StoryTable from './story-table.svelte';
-	import { getStoriesStore } from '$lib/pocketbase/stories.svelte';
+	import { getStoriesStore } from '$lib/stores/stories.svelte';
 	import NewStorySheet from '$lib/components/internal/NewStorySheet.svelte';
 	import * as ToggleGroup from '$lib/components/ui/toggle-group';
 	import { getPublicTeamProfilesStore } from '$lib/stores/public_team_profiles.svelte';
