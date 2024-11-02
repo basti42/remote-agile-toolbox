@@ -21,14 +21,14 @@ export const actions = {
         console.debug("form action for new story creation");
 		const data = await request.formData();
 		const title = data.get("new_story_title");
-		console.debug("\tnew story title: ", title);
+		// console.debug("\tnew story title: ", title);
 		const description = data.get("new_story_description");
-		console.debug("\tnew story description: ", description);
+		// console.debug("\tnew story description: ", description);
 		let assignee_uuid: string | null = data.get("new_story_assignee") as string;
 		if (assignee_uuid.length <= 0) { assignee_uuid = null; }
-		console.debug("\tnew story assignee: ", assignee_uuid);
+		// console.debug("\tnew story assignee: ", assignee_uuid);
 		const type = data.get("new_story_type");
-		console.debug("\tnew story type: type");
+		// console.debug("\tnew story type: type");
 
 		const newStory = {
 			type: type as string,

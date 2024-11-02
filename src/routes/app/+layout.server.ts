@@ -46,8 +46,6 @@ export const load = async ({ locals, fetch }) => {
 			} satisfies NewTeamRequest)
 		})
 	} 
-	
-
 
 	// get the current user's profile for any displaying purposes
 	// on first login make sure a profile is created on login route

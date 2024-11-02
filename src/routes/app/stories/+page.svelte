@@ -19,7 +19,6 @@
 		storiesStore.addStory(form.newStory);
 	}
 
-
 	interface SelectOption {
 		value: string | null;
 		label: string;
@@ -57,5 +56,5 @@
 </div>
 
 {#if storiesStore.stories.length > 0}
-	<StoryTable />
+	<StoryTable stories={data.stories}/>
 {/if}

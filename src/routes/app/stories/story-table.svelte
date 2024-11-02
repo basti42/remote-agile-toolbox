@@ -5,9 +5,12 @@
 	import { getStoriesStore } from '$lib/stores/stories.svelte';
 	import { getPublicTeamProfilesStore } from '$lib/stores/public_team_profiles.svelte';
 	import {ListTodo, Bug} from 'lucide-svelte/icons'
+	import type { Story } from '$lib/models/story';
 
-	const storiesStore = getStoriesStore();
+	// const storiesStore = getStoriesStore();
 	const publicTeamProfilesStore = getPublicTeamProfilesStore();
+	let {stories} : {stories: Story[]} = $props();
+
 </script>
 
 <Table.Root class="w-full">
@@ -23,7 +26,7 @@
 		</Table.Row>
 	</Table.Header>
 	<Table.Body>
-		{#each storiesStore.stories as story, idx}
+		{#each stories as story, idx}
 			<Table.Row>
 				<Table.Cell>{idx + 1}</Table.Cell>
 				<Table.Cell>
