@@ -2,11 +2,20 @@
 	import * as Card from '$lib/components/ui/card';
 	import {Skeleton} from '$lib/components/ui/skeleton';
 	import {Label} from '$lib/components/ui/label';
+	import { Loader } from 'lucide-svelte';
+
+	let {title} = $props();
+
 </script>
 
 <Card.Root class="w-full">
 	<Card.Header>
-		<Card.Title>Stories</Card.Title>
+		<Card.Title>
+			<div class="flex flex-row items-center gap-x-4">
+				<Loader />
+				<span>{title}</span>
+			</div>
+		</Card.Title>
 	</Card.Header>
 	<Card.Content>
 		<div class="grid w-full grid-cols-4 items-center gap-4">

@@ -5,6 +5,7 @@
 	import type { Story } from '$lib/models/story';
 	import { getStoriesStore } from '$lib/stores/stories.svelte';
 	import StoryOverviewSkeleton from './story-overview-skeleton.svelte';
+	import BugOverviewCard from './bug-overview-card.svelte';
 
 	let { data } = $props();
 	
@@ -21,9 +22,11 @@
 
 <div class="grid grid w-full grid-cols-3 gap-4 space-y-4">
 	{#await data.stories}
-		<StoryOverviewSkeleton />
+		<StoryOverviewSkeleton title="Stories" />
+		<StoryOverviewSkeleton title="Bugs" />
 	{:then}
 		<StoryOverviewCard />
+		<BugOverviewCard />
 	{:catch}
 		error
 	{/await}

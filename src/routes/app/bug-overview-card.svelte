@@ -2,14 +2,14 @@
 	import * as Card from '$lib/components/ui/card';
 	import Label from '$lib/components/ui/label/label.svelte';
 	import { getStoriesStore } from '$lib/stores/stories.svelte';
-	import { ListTodo } from 'lucide-svelte';
+	import { Bug } from 'lucide-svelte';
 
 	const storiesStore = getStoriesStore();
 
 	let iceboxNumber = $derived.by(() => {
 		let total = 0;
 		for (let story of storiesStore.stories) {
-			if (story.status === 'icebox' && story.type === "story") {
+			if (story.status === 'icebox' && story.type === "bug") {
 				total += 1;
 			}
 		}
@@ -19,7 +19,7 @@
 	let inprogressNumber = $derived.by(() => {
 		let total = 0;
 		for (let story of storiesStore.stories) {
-			if (story.status === 'in progress' && story.type === "story") {
+			if (story.status === 'in progress' && story.type === "bug") {
 				total += 1;
 			}
 		}
@@ -29,7 +29,7 @@
 	let inreviewNumber = $derived.by(() => {
 		let total = 0;
 		for (let story of storiesStore.stories) {
-			if (story.status === 'in review' && story.type === "story") {
+			if (story.status === 'in review' && story.type === "bug") {
 				total += 1;
 			}
 		}
@@ -39,7 +39,7 @@
 	let completedNumber = $derived.by(() => {
 		let total = 0;
 		for (let story of storiesStore.stories) {
-			if (story.status === 'completed' && story.type === "story") {
+			if (story.status === 'completed' && story.type === "bug") {
 				total += 1;
 			}
 		}
@@ -51,8 +51,8 @@
 	<Card.Header>
 		<Card.Title>
 			<div class="flex flex-row items-center gap-x-4">
-				<ListTodo color="dodgerblue"/>
-				<span>Stories</span>
+				<Bug color="red"/>
+				<span>Bugs</span>
 			</div>
 		</Card.Title>
 	</Card.Header>
