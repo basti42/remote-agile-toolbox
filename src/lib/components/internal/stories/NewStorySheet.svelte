@@ -20,7 +20,7 @@
 
 	let options = publicTeamProfilesStore
 		.getPublicTeamProfiles()
-		.map((pub) => { return {value: pub.uuid, label: pub.name} as SelectOption });
+		.map((pub) => { return {value: pub.user_uuid, label: pub.name} as SelectOption });
 	options.unshift({value: null, label: "unassigned"} as SelectOption);
 	let assignee_selection = $state<SelectOption>(options[0]);
 

@@ -12,7 +12,7 @@ export interface UserProfile {
 }
 
 export interface PublicUser {
-	uuid: string;
+	user_uuid: string;
 	name: string;
 	avatar: string;
 }

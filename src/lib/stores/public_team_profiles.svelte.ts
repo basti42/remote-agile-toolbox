@@ -10,7 +10,7 @@ class PublicTeamProfilesStore {
         $effect(() => {
             const m = new Map<string, PublicUser>();
             for (const pub of publicProfiles) {
-                m.set(pub.uuid, pub);
+                m.set(pub.user_uuid, pub);
             }
             this.publicProfiles = m;
         });
