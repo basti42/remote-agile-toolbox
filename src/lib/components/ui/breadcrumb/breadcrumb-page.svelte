@@ -6,9 +6,10 @@
 		el?: HTMLSpanElement;
 	};
 
-	export let el: $$Props['el'] = undefined;
-	export let className: $$Props['class'] = undefined;
-	export { className as class };
+	interface Props { [key: string]: any }
+
+	let { el = $bindable(undefined), class: className = undefined, children, ...rest }: Props = $props();
+	
 </script>
 
 <span
@@ -17,7 +18,7 @@
 	aria-disabled="true"
 	aria-current="page"
 	class={cn('font-normal text-foreground', className)}
-	{...$$restProps}
+	{...rest}
 >
-	<slot />
+	{@render children?.()}
 </span>

@@ -19,8 +19,7 @@ const PROFILE_STORE_KEY = 'profile_store';
 
 export function setProfileStore(profile: UserProfile): ProfileStore {
 	const newProfileStore = new ProfileStore(profile);
-	setContext(PROFILE_STORE_KEY, newProfileStore);
-	return newProfileStore;
+	return setContext(PROFILE_STORE_KEY, newProfileStore);
 }
 
 export function getProfileStore(): ProfileStore {

@@ -13,7 +13,7 @@
 	let { data, children } = $props();
 	let { userProfile, teams } = data;
 
-	console.debug("app.layoutt: gotten new userProfile and teams: ", userProfile, teams);
+	// console.debug("app.layoutt: gotten new userProfile and teams: ", userProfile, teams);
 
 	setProfileStore(userProfile);
 	const teamsStore = setTeamsStore(teams);

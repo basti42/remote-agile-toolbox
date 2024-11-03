@@ -10,10 +10,7 @@ export const load = async ({ locals, fetch }) => {
 		throw redirect(302, '/auth/login');
 	}
 
-	console.log("app.layout.server: user from auth: ", locals.auth.user);
-
-
-
+	// console.log("app.layout.server: user from auth: ", locals.auth.user);
 
 	let profileResponse = await fetch("http://localhost:8083/rat/profiles");
 	if (profileResponse.status !== 200) {

@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { getAuthContext } from '$lib/pocketbase/auth.svelte';
 	import { Button } from '$lib/components/ui/button';
 
-	let auth = getAuthContext();
 </script>
 
 <class class="lg:grif-cols-2 grid min-h-[100dvh] w-full grid-cols-1">
@@ -10,7 +8,7 @@
 		<div class="max-w-md space-y-4">
 			<h1 class="text-3xl font-bold tracking-tight sm:text-4xl">Sorry, something went wrong.</h1>
 			<p class="text-muted-foreground">You were logged out, please log in again.</p>
-			<Button onclick={() => auth.signInWithGithub()}>Sign In with Github</Button>
+			<Button href="/auth/login">Sign In with Github</Button>
 		</div>
 	</div>
 </class>

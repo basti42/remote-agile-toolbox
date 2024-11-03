@@ -60,11 +60,10 @@
 			 <input type="hidden" id="old_status" name="old_status" value={data.selected_story.status} />
 			<input type="hidden" id="new_status" name="new_status" bind:value={currentStatusOption.value}/>
 
-			<Select.Root bind:disabled={statusSelectionDisabled}
-				bind:selected={currentStatusOption}
-				onSelectedChange={(v) => { updateNewStoryStatus(v?.value as string) }}>
-				<Select.Trigger class="w-[180px]" id="status_selector">
-					<Select.Value placeholder={data.selected_story.status} />
+			<Select.Root type="single" bind:open={statusSelectionDisabled}
+				bind:value={currentStatusOption.value}
+				onValueChange={(v) => { updateNewStoryStatus(v as string) }}>
+				<Select.Trigger class="w-[180px]" id="status_selector" placeholder={data.selected_story.status}>
 				</Select.Trigger>
 				<Select.Content>
 					{#each getStoryTransitions(data.selected_story.status) as transition}
@@ -97,7 +96,13 @@
 					<span>{data.selected_story.updated_at.toLocaleString()}</span>
 				</div>
 				{#if hasChanged}
-				<Button variant="secondary" onclick={updateDescription}>Save Changes</Button>
+					<Button 
+						variant="outline"
+						color="dodgerblue" 
+						onclick={updateDescription}
+					>
+						Save Changes
+					</Button>
 				{/if}
 			</div>
 		</Card.Footer>

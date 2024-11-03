@@ -4,8 +4,10 @@
 
 	type $$Props = HTMLAttributes<HTMLDivElement>;
 
-	let className: $$Props["class"] = undefined;
-	export { className as class };
+	interface Props { [key: string]: any }
+
+	let { class: className = undefined, ...rest }: Props = $props();
+	
 </script>
 
-<div class={cn("bg-muted animate-pulse rounded-md", className)} {...$$restProps}></div>
+<div class={cn("bg-muted animate-pulse rounded-md", className)} {...rest}></div>

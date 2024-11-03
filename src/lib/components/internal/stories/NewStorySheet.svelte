@@ -1,12 +1,13 @@
 <script lang="ts">
 	import * as Sheet from '$lib/components/ui/sheet';
 	import * as Select from '$lib/components/ui/select';
-	import { Button } from '$lib/components/ui/button';
+	import { Button, buttonVariants } from '$lib/components/ui/button';
 	import Label from '$lib/components/ui/label/label.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { getPublicTeamProfilesStore } from '$lib/stores/public_team_profiles.svelte';
 	import { enhance } from '$app/forms';
+	import {TicketPlus} from 'lucide-svelte';
 
 	let {form = $bindable()} = $props();
 
@@ -38,8 +39,9 @@
 </script>
 
 <Sheet.Root bind:open={openSheet}>
-	<Sheet.Trigger asChild let:builder>
-		<Button builders={[builder]} variant="outline">+Story</Button>
+	<Sheet.Trigger class={buttonVariants({variant: 'outline'})}>
+		<TicketPlus class="mr-2 size-4" />
+		Story
 	</Sheet.Trigger>
 	<Sheet.Content side="right" >
 		<Sheet.Header>
@@ -68,13 +70,12 @@
 				<!-- ASSIGNEE -->
 				<div class="grid grid-cols-4 items-center gap-4">
 					<Label for="new_story_assignee" class="text-right">Assignee</Label>
-					<Select.Root bind:selected={assignee_selection} >
-						<Select.Trigger class="col-span-3">
-							<Select.Value placeholder={options[0].label}></Select.Value>
+					<Select.Root type="single" bind:value={assignee_selection.value as string}>
+						<Select.Trigger class="col-span-3" placeholder={options[0].label}>
 						</Select.Trigger>
 						<Select.Content>
 							{#each options as opts}
-								<Select.Item value={opts.value}>{opts.label}</Select.Item>
+								<Select.Item value={opts.value as string}>{opts.label}</Select.Item>
 							{/each}
 						</Select.Content>
 					</Select.Root>
@@ -83,9 +84,8 @@
 				<!-- TYPE -->
 				<div class="grid grid-cols-4 items-center gap-4">
 					<Label for="new_story_type" class="text-right">Type</Label>
-					<Select.Root bind:selected={type_selection} >
-						<Select.Trigger class="col-span-3">
-							<Select.Value placeholder={typeOptions[0].label}></Select.Value>
+					<Select.Root type="single" bind:value={type_selection.value as string} >
+						<Select.Trigger class="col-span-3" placeholder={typeOptions[0].label}>
 						</Select.Trigger>
 						<Select.Content>
 							{#each typeOptions as opts}
@@ -99,8 +99,8 @@
 				<!-- SUBMIT BUTTON -->
 				<div class="flex flex-row-reverse justify-between items-center">
 					<Button variant="default" type="submit">Create</Button>
-					<Sheet.Close asChild let:builder>
-						<Button variant="destructive" builders={[builder]}>Close</Button>
+					<Sheet.Close>
+							<Button variant="destructive">Close</Button>
 					</Sheet.Close>
 				</div>
 			</div>

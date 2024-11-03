@@ -20,8 +20,7 @@ export type {TeamsStore};
 
 export function setTeamsStore(teams: Team[]) : TeamsStore {
     const teamsStore = new TeamsStore(teams);
-    setContext(TEAMS_STORE_KEY, teamsStore);
-    return teamsStore;
+    return setContext(TEAMS_STORE_KEY, teamsStore);
 }
 
 export function getTeamsStore() : TeamsStore {

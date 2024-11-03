@@ -32,8 +32,7 @@ const STORIES_STORE_KEY = 'stories_store';
 
 export function setStoriesStore(): StoriesStore {
 	const newStoriesStore = new StoriesStore();
-	setContext(STORIES_STORE_KEY, newStoriesStore);
-	return newStoriesStore;
+	return setContext(STORIES_STORE_KEY, newStoriesStore);
 }
 
 export function getStoriesStore(): StoriesStore {

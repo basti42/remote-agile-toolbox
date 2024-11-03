@@ -38,8 +38,7 @@ export type { PublicTeamProfilesStore as PublicTeamProfileStore };
 
 export function setPublicTeamProfilesStore(publicProfiles: PublicUser[]): PublicTeamProfilesStore {
 	const newPublicTeamProfilesStore = new PublicTeamProfilesStore(publicProfiles);
-	setContext(PUBLIC_TEAM_PROFILES_STORE, newPublicTeamProfilesStore);
-	return newPublicTeamProfilesStore;
+	return setContext(PUBLIC_TEAM_PROFILES_STORE, newPublicTeamProfilesStore);
 }
 
 export function getPublicTeamProfilesStore(): PublicTeamProfilesStore {
