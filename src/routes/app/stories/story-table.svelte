@@ -30,11 +30,13 @@
 			<Table.Row>
 				<Table.Cell>{idx + 1}</Table.Cell>
 				<Table.Cell>
-					{#if story.type === "story"}
-						<ListTodo color="dodgerblue" />
-					{:else }
-						<Bug color="red"/>
-					{/if}
+					<div title={story.type}>
+						{#if story.type === "story"}
+							<ListTodo color="dodgerblue" />
+						{:else }
+							<Bug color="red"/>
+						{/if}
+					</div>
 				</Table.Cell>
 				<Table.Cell class="truncate">
 					<a href="/app/stories/{story.uuid}" data-sveltekit-preload-data="tap">

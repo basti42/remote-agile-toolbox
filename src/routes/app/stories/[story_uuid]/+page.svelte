@@ -11,6 +11,7 @@
 	import {getStoryTransitions, type StoryTransition} from '$lib/models/story.js';
 	import { getStoriesStore } from '$lib/stores/stories.svelte';
 	import { enhance } from '$app/forms';
+	import { Bug, ListTodo } from 'lucide-svelte';
 
 
     let {data, form} = $props();
@@ -51,7 +52,18 @@
 
 
 <div class="flex flex-row w-full items-center justify-between gap-y-4 border-b-2 py-2">
-	<h1>{data.selected_story.title}</h1>
+	<h1 class="flex flex-row space-x-4">
+		<div title={data.selected_story.type}>
+			{#if data.selected_story.type === "story"}
+				<ListTodo color="dodgerblue" />
+			{:else }
+				<Bug color="red"/>
+			{/if}
+		</div>
+		<span>
+			{data.selected_story.title}
+		</span>
+	</h1>
 	<!-- TODO -->
 	<div class="">
 		<form method="POST" action="?/updateStoryStatus" 
