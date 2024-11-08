@@ -50,8 +50,8 @@
 			<Card.Header>
 				<Card.Title>
 					<div class="flex flex-row items-center justify-between">
-						<span>{teams[0].name}</span>
-						{#if teams[0].owner_uuid === data.userProfile.user_uuid}
+						<span>{team.name}</span>
+						{#if team.owner_uuid === data.userProfile.user_uuid}
 							<!-- TODO edit dialog for team creator -->
 							<PencilLine color="orange"/>
 						{/if}
@@ -65,18 +65,13 @@
 				</Card.Description>
 			</Card.Header>
 			<Card.Content>
-				<div>
-					<p>
-						TODO: teams meta data, like description
-					</p>
-					<p>
-						TODO: get story, bug, sprint infos for team
-					</p>
+				<div class="text-ellipsis overflow-hidden space-y-4">
+						{team.description}
 				</div>
 			</Card.Content>
 		</Card.Root>
 
-		<Card.Root>
+		<Card.Root class="row-span-2">
 			<Card.Header>
 				<Card.Title>
 					<div class="flex flex-row items-center justify-between">
@@ -96,6 +91,30 @@
 				</div>
 			</Card.Content>
 		</Card.Root>
+
+		<!-- 2nd row -->
+		 <Card.Root>
+			<Card.Header>
+				<Card.Title>
+					<span>Stories in {team.name}</span>
+				</Card.Title>
+			</Card.Header>
+			<Card.Content>
+				<span>TODO</span>
+			</Card.Content>
+		 </Card.Root>
+
+		 <Card.Root>
+			<Card.Header>
+				<Card.Title>
+					<span>Bugs in {team.name}</span>
+				</Card.Title>
+			</Card.Header>
+			<Card.Content>
+				<span>TODO</span>
+			</Card.Content>
+		 </Card.Root>
+
 
 	</div>
 

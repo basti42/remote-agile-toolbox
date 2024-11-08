@@ -4,6 +4,7 @@ export interface Team {
     owner_uuid: string;
     abbreviation: string;
     name: string;
+    description: string;
     members: TeamMember[];
 }
 
