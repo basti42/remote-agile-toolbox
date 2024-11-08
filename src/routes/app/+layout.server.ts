@@ -1,4 +1,4 @@
-import type { NewProfileRequest, UserProfile } from '$lib/models/profile.js';
+import type { NewProfileRequest, PublicUser, UserProfile } from '$lib/models/profile.js';
 import type { NewTeamRequest, Team } from '$lib/models/team.js';
 import { redirect } from '@sveltejs/kit';
 
@@ -43,17 +43,18 @@ export const load = async ({ locals, fetch }) => {
 			} satisfies NewTeamRequest)
 		})
 	} 
+	const teams = await teamResponse.json() as Team[];
+	const team = teams[0];
 
-	// get the current user's profile for any displaying purposes
-	// on first login make sure a profile is created on login route
-	// const response = await fetch("http://localhost:8083/rat/profiles");
-	// console.debug("response status: ", response.statusText);
-	// const data = await response.json();
-	// console.debug("data: ", data);
+	const publicProfileResponse = await fetch(`http://localhost:8083/rat/teams/${team.uuid}/public-profiles`);
+	// console.log("public profile response: ", publicProfileResponse);
+	const publicProfiles = await publicProfileResponse.json() as PublicUser[]; 
+	// console.log("public profiles: ", publicProfiles);
 
 
 	return {
 		userProfile: await profileResponse.json() as UserProfile,
-		teams: await teamResponse.json() as Team[]
+		team: team,
+		publicTeamMemberProfiles: publicProfiles
 	};
 };

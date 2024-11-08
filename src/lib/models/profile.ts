@@ -14,7 +14,9 @@ export interface UserProfile {
 export interface PublicUser {
 	user_uuid: string;
 	name: string;
-	avatar: string;
+	abbreviation: string;
+	avatar_url: string;
+	role: string;
 }
 
 export interface NewProfileRequest {

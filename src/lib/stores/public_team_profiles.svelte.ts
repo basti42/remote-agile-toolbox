@@ -7,17 +7,15 @@ class PublicTeamProfilesStore {
     // TODO implement properly
 
     constructor(publicProfiles: PublicUser[]) {
-        $effect(() => {
-            const m = new Map<string, PublicUser>();
-            for (const pub of publicProfiles) {
-                m.set(pub.user_uuid, pub);
-            }
-            this.publicProfiles = m;
-        });
+        const m = new Map<string, PublicUser>();
+        for (const pub of publicProfiles) {
+            m.set(pub.user_uuid, pub);
+        }
+        this.publicProfiles = m;
     }
 
     
-    getPublicTeamProfilebyUUID(uuid: string | undefined) : PublicUser | undefined {
+    getPublicTeamProfilebyUserUUID(uuid: string | undefined) : PublicUser | undefined {
         if (uuid === undefined) {
             return undefined
         }

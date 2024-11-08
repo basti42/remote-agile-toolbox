@@ -3,8 +3,8 @@ import { redirect } from '@sveltejs/kit';
 import type { PageServerLoadEvent } from '../../app/stories/$types';
 
 export const load = async (event: PageServerLoadEvent) => {
-	// console.log("login server load")
-	// console.log(event);
+	// console.debug("login server load")
+	// console.debug(event);
 	console.debug('login.server: handling request: ', event.request.url);
 
 	// console.debug(`---> received call to = '${event.url}'`);

@@ -42,7 +42,7 @@
 					</a>
 				</Table.Cell>
 				<Table.Cell>{story.status}</Table.Cell>
-				<Table.Cell>{ publicTeamProfilesStore.getPublicTeamProfilebyUUID(story.assignee)?.name || 'unassigned'}</Table.Cell>
+				<Table.Cell>{ publicTeamProfilesStore.getPublicTeamProfilebyUserUUID(story.assignee)?.name || 'unassigned'}</Table.Cell>
 				<Table.Cell>
 					{#if story.estimation}
 						<div class="flex flex-row gap-x-4">

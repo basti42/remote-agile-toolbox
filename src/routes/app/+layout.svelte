@@ -11,15 +11,15 @@
 
 	// user profile is being loaded in layout for entire /app context
 	let { data, children } = $props();
-	let { userProfile, teams } = data;
+	let { userProfile, team, publicTeamMemberProfiles} = data;
 
 	// console.debug("app.layoutt: gotten new userProfile and teams: ", userProfile, teams);
 
 	setProfileStore(userProfile);
-	const teamsStore = setTeamsStore(teams);
+	const teamsStore = setTeamsStore([team]);
 	setUrlPathStore();
 	setStoriesStore();
-	setPublicTeamProfilesStore(teamsStore.getOwnTeams(userProfile.user_uuid)[0].members);
+	setPublicTeamProfilesStore(publicTeamMemberProfiles);
 </script>
 
 <div class="h-full w-full">

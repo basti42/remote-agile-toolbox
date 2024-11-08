@@ -5,14 +5,22 @@
 	import { UserPlus, PencilLine } from 'lucide-svelte';
 	import { getPublicTeamProfilesStore } from '$lib/stores/public_team_profiles.svelte';
 	import { type PublicUser } from '$lib/models/profile.js';
+	import type { Team, TeamMember } from '$lib/models/team.js';
 
 	let {data} = $props();
+
+	let {teams} : {teams: Team[]} = data;
+	let team = teams[0];
+	// console.log("selected Team: ", team);
 
 	const urlPathStore = getUrlPathStore();
 	urlPathStore.update($page.url.pathname);
 
 	const publicProfiles = getPublicTeamProfilesStore();
-	const ownerProfile = publicProfiles.getPublicTeamProfilebyUUID(data.teams[0].owner_uuid)
+	const ownerProfile = publicProfiles.getPublicTeamProfilebyUserUUID(team.members[0].user_uuid);
+
+	// console.log("owner profile: ", ownerProfile);
+
 </script>
 
 
@@ -26,9 +34,9 @@
 	<span>LOADING</span>
 {:then teams}
 
-	{#snippet memberRow(member: PublicUser)}
+	{#snippet memberRow(member: TeamMember)}
 		<div class="flex flex-row items-center justify-between">
-			<span>{member.name}</span>
+			<span>{publicProfiles.getPublicTeamProfilebyUserUUID(member.user_uuid)?.name}</span>
 			<select class="select p-1 border-rounded">
 				<option selected>Dev Team</option>
 				<option>PO</option>
@@ -82,7 +90,7 @@
 			</Card.Header>
 			<Card.Content>
 				<div class="flex flex-col">
-					{#each teams[0].members as member}
+					{#each team.members as member}
 						{@render memberRow(member)}
 					{/each}
 				</div>
