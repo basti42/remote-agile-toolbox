@@ -50,8 +50,9 @@ export const handleFetch = async({request, fetch, event}) => {
 	// console.log("cookie Data: ", cookieData);
 	
 	const accessToken = cookieData.access_token;
-	console.log("request url: ", request.url);
-	console.log("acces token: ", accessToken);
+	// TODO check token expiry and get a new token from auth svc if required
+	// console.log("hooks.handleFetch: request url: ", request.url);
+	// console.log("hooks.handleFetch: acces token: ", accessToken);
 
 	request.headers.set("Authorization", `Bearer ${accessToken}`);
 

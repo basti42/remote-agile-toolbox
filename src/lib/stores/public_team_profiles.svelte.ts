@@ -1,25 +1,21 @@
-import type { PublicUser } from "$lib/models/story";
+import type { PublicUser } from "$lib/models/profile";
 import { getContext, setContext } from "svelte";
 
 class PublicTeamProfilesStore {
-    publicProfiles: Map<string, PublicUser> = new Map();
+    publicProfiles: Map<string, PublicUser> = $state(new Map());
 
     // TODO implement properly
 
-    constructor() {
-        $effect(() => {
-            const m = new Map<string, PublicUser>();
-            m.set("e0a54d2e-d597-46e7-a50c-49af302460c9", {
-                uuid: "e0a54d2e-d597-46e7-a50c-49af302460c9",
-                username: "Basti",
-                avatar: "https://avatars.githubusercontent.com/u/24679920?v=4"
-            } satisfies PublicUser);
-            this.publicProfiles = m;
-        });
+    constructor(publicProfiles: PublicUser[]) {
+        const m = new Map<string, PublicUser>();
+        for (const pub of publicProfiles) {
+            m.set(pub.user_uuid, pub);
+        }
+        this.publicProfiles = m;
     }
 
     
-    getPublicTeamProfilebyUUID(uuid: string | undefined) : PublicUser | undefined {
+    getPublicTeamProfilebyUserUUID(uuid: string | undefined) : PublicUser | undefined {
         if (uuid === undefined) {
             return undefined
         }
@@ -38,10 +34,9 @@ class PublicTeamProfilesStore {
 const PUBLIC_TEAM_PROFILES_STORE = 'public_team_profiles_store';
 export type { PublicTeamProfilesStore as PublicTeamProfileStore };
 
-export function setPublicTeamProfilesStore(): PublicTeamProfilesStore {
-	const newPublicTeamProfilesStore = new PublicTeamProfilesStore();
-	setContext(PUBLIC_TEAM_PROFILES_STORE, newPublicTeamProfilesStore);
-	return newPublicTeamProfilesStore;
+export function setPublicTeamProfilesStore(publicProfiles: PublicUser[]): PublicTeamProfilesStore {
+	const newPublicTeamProfilesStore = new PublicTeamProfilesStore(publicProfiles);
+	return setContext(PUBLIC_TEAM_PROFILES_STORE, newPublicTeamProfilesStore);
 }
 
 export function getPublicTeamProfilesStore(): PublicTeamProfilesStore {

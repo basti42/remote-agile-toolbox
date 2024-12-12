@@ -9,18 +9,24 @@
 	};
 	type $$Events = TogglePrimitive.Events;
 
-	let className: $$Props['class'] = undefined;
-	export let variant: $$Props['variant'] = 'default';
-	export let size: $$Props['size'] = 'default';
-	export let pressed: $$Props['pressed'] = undefined;
-	export { className as class };
+	interface Props { [key: string]: any }
+
+	let {
+		class: className = undefined,
+		variant = 'default',
+		size = 'default',
+		pressed = $bindable(undefined),
+		children,
+		...rest
+	}: Props = $props();
+	
 </script>
 
 <TogglePrimitive.Root
 	bind:pressed
 	class={cn(toggleVariants({ variant, size, className }))}
-	{...$$restProps}
+	{...rest}
 	on:click
 >
-	<slot />
+	{@render children?.()}
 </TogglePrimitive.Root>

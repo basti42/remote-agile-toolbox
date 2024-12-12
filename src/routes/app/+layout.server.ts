@@ -1,7 +1,8 @@
-import type { UserProfile } from '$lib/models/profile';
+import type { NewProfileRequest, PublicUser, UserProfile } from '$lib/models/profile.js';
+import type { NewTeamRequest, Team } from '$lib/models/team.js';
 import { redirect } from '@sveltejs/kit';
 
-export const load = async ({ locals }) => {
+export const load = async ({ locals, fetch }) => {
 	// at this stage there should always be a logged in user
 	// if not redirect to login
 	if (!locals.auth) {
@@ -9,36 +10,51 @@ export const load = async ({ locals }) => {
 		throw redirect(302, '/auth/login');
 	}
 
-	// // get the current user's profile for any displaying purposes
-	// // create one if none exists yet
-	// const currentUser: AuthModel = locals.pb.authStore.model;
+	// console.log("app.layout.server: user from auth: ", locals.auth.user);
 
-	let profile!: UserProfile;
-	try {
-		profile = await locals.pb
-			.collection('profiles')
-			.getFirstListItem<UserProfile>('user_id="' + locals.auth.user.id + '"');
-		// console.debug(`found profile for user with ID=${currentUser?.id}: `, profile);
-	} catch (err) {
-		console.debug(`No profile found for user with ID=${locals.auth.user.id}. Error: ${err}`);
-		// console.debug("trying to create one");
-		const newProfile = {
-			display_name: 'Raccon',
-			abbreviation: 'Ra',
-			bio: '',
-			quote: '',
-			role: 'user',
-			user_id: locals.auth.user.id
-		};
-
-		try {
-			profile = await locals.pb.collection('profiles').create<UserProfile>(newProfile);
-		} catch (err) {
-			console.log(`error creating new profile: ${err}`);
-		}
+	let profileResponse = await fetch("http://localhost:8083/rat/profiles");
+	if (profileResponse.status !== 200) {
+		console.log("\tno profile found for user, trying to create one");
+	
+		const split = locals.auth.user.email.split('@'); 
+		const name = split.at(0) as string;
+		const abbreviation = name?.substring(0, 2);
+		profileResponse = await fetch("http://localhost:8083/rat/profiles", {
+			method: "POST",
+			body: JSON.stringify({
+				name: name,
+				abbreviation: abbreviation,
+				avatar_url: locals.auth.user.avatar
+			} satisfies NewProfileRequest)
+		});
 	}
 
+	let teamResponse = await fetch("http://localhost:8083/rat/teams");
+	if (teamResponse.status !== 200 || (await (await teamResponse.clone()).json()).length <= 0 ) {
+		console.log("\tno team found for user, trying to create one");
+
+		const split = locals.auth.user.email.split('@'); 
+		const name = split.at(0) as string;
+		teamResponse = await fetch("http://localhost:8083/rat/teams", {
+			method: "POST",
+			body: JSON.stringify({
+				name: name + "'s Team",
+				abbreviation: "RAT"
+			} satisfies NewTeamRequest)
+		})
+	} 
+	const teams = await teamResponse.json() as Team[];
+	const team = teams[0];
+
+	const publicProfileResponse = await fetch(`http://localhost:8083/rat/teams/${team.uuid}/public-profiles`);
+	// console.log("public profile response: ", publicProfileResponse);
+	const publicProfiles = await publicProfileResponse.json() as PublicUser[]; 
+	// console.log("public profiles: ", publicProfiles);
+
+
 	return {
-		userProfile: profile
+		userProfile: await profileResponse.json() as UserProfile,
+		team: team,
+		publicTeamMemberProfiles: publicProfiles
 	};
 };

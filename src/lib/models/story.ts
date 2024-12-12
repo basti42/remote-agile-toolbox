@@ -1,5 +1,6 @@
 export interface Story {
 	uuid: string;
+	type: 'story' | 'bug';
 	creator: string;
 	// count: number;
 	assignee: string | undefined;
@@ -15,9 +16,11 @@ export interface Story {
 	estimation: StorypointEstimation | null;
 	acceptance_criteria: AcceptanceCriterium[] | undefined;
 	history: StoryHistory[];
+	comments: Comment[];
 }
 
 export interface NewStory {
+	type: string;
 	assignee: string | null;
 	team: string | null;
 	project: string | null;
@@ -31,12 +34,6 @@ export interface StorypointEstimation {
 	complexity: number;
 	risk: number;
 	effort: number;
-}
-
-export interface PublicUser {
-	uuid: string;
-	username: string;
-	avatar: string;
 }
 
 export interface AcceptanceCriterium {
@@ -54,6 +51,15 @@ export interface StoryHistory {
 	to_status: string;
 	date: Date;
 	by: string;
+}
+
+export interface Comment {
+	id: number;
+	created_at: Date;
+	updated_at: Date;
+	story_uuid: string | null;
+	user_uuid: string;
+	text: string;
 }
 
 export interface StoryTransition {

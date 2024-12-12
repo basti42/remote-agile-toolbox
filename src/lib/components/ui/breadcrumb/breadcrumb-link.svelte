@@ -7,25 +7,31 @@
 		asChild?: boolean;
 	};
 
-	export let href: $$Props['href'] = undefined;
-	export let el: $$Props['el'] = undefined;
-	export let asChild: $$Props['asChild'] = false;
-	let className: $$Props['class'] = undefined;
-	export { className as class };
+	interface Props { [key: string]: any }
 
-	let attrs: Record<string, unknown>;
+	let {
+		href = undefined,
+		el = $bindable(undefined),
+		asChild = false,
+		class: className = undefined,
+		children,
+		...rest
+	}: Props = $props();
+	
 
-	$: attrs = {
+	let attrs: Record<string, unknown> = $derived({
 		class: cn('hover:text-foreground transition-colors', className),
 		href,
-		...$$restProps
-	};
+		...rest
+	});
+
+	
 </script>
 
 {#if asChild}
-	<slot {attrs} />
+	{@render children?.({ attrs, })}
 {:else}
 	<a bind:this={el} {...attrs} {href}>
-		<slot {attrs} />
+		{@render children?.({ attrs, })}
 	</a>
 {/if}

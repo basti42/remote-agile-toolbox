@@ -41,8 +41,7 @@ export type { UrlPathStore };
 
 export function setUrlPathStore(): UrlPathStore {
 	const newUrlPathStore = new UrlPathStore();
-	setContext(URL_PATH_STORE, newUrlPathStore);
-	return newUrlPathStore;
+	return setContext(URL_PATH_STORE, newUrlPathStore);
 }
 
 export function getUrlPathStore(): UrlPathStore {

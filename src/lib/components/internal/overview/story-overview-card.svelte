@@ -1,14 +1,15 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card';
 	import Label from '$lib/components/ui/label/label.svelte';
-	import { getStoriesStore } from '$lib/pocketbase/stories.svelte';
+	import { getStoriesStore } from '$lib/stores/stories.svelte';
+	import { ListTodo } from 'lucide-svelte';
 
 	const storiesStore = getStoriesStore();
 
 	let iceboxNumber = $derived.by(() => {
 		let total = 0;
 		for (let story of storiesStore.stories) {
-			if (story.status === 'icebox') {
+			if (story.status === 'icebox' && story.type === "story") {
 				total += 1;
 			}
 		}
@@ -18,7 +19,7 @@
 	let inprogressNumber = $derived.by(() => {
 		let total = 0;
 		for (let story of storiesStore.stories) {
-			if (story.status === 'in progress') {
+			if (story.status === 'in progress' && story.type === "story") {
 				total += 1;
 			}
 		}
@@ -28,7 +29,7 @@
 	let inreviewNumber = $derived.by(() => {
 		let total = 0;
 		for (let story of storiesStore.stories) {
-			if (story.status === 'in review') {
+			if (story.status === 'in review' && story.type === "story") {
 				total += 1;
 			}
 		}
@@ -38,7 +39,7 @@
 	let completedNumber = $derived.by(() => {
 		let total = 0;
 		for (let story of storiesStore.stories) {
-			if (story.status === 'completed') {
+			if (story.status === 'completed' && story.type === "story") {
 				total += 1;
 			}
 		}
@@ -48,7 +49,12 @@
 
 <Card.Root class="w-full">
 	<Card.Header>
-		<Card.Title>Stories</Card.Title>
+		<Card.Title>
+			<div class="flex flex-row items-center gap-x-4">
+				<ListTodo color="dodgerblue"/>
+				<span>Stories</span>
+			</div>
+		</Card.Title>
 	</Card.Header>
 	<Card.Content>
 		<div class="grid w-full grid-cols-4 items-center">

@@ -4,13 +4,15 @@
 
 	type $$Props = HTMLAttributes<HTMLDivElement>;
 
-	let className: $$Props['class'] = undefined;
-	export { className as class };
+	interface Props { [key: string]: any }
+
+	let { class: className = undefined, children, ...rest }: Props = $props();
+	
 </script>
 
 <div
 	class={cn('rounded-lg border bg-card text-card-foreground shadow-sm', className)}
-	{...$$restProps}
+	{...rest}
 >
-	<slot />
+	{@render children?.()}
 </div>
